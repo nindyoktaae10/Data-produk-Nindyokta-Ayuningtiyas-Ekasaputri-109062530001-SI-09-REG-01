@@ -1,9 +1,19 @@
+<?php
+
+require __DIR__ . '/../config/database.php';
+require __DIR__ . '/../app/models/Produk.php';
+require __DIR__ . '/../app/controllers/ProdukController.php';
+
+$db = (new Database())->connect();
+$model = new Produk($db);
+$controller = new ProdukController($model);
+
 $page = $_GET['page'] ?? 'produk';
 $action = $_GET['action'] ?? 'index';
 
 if ($page !== 'produk') {
     http_response_code(404);
-    exit('Halaman tidak ditemukan.');
+    exit('Halaman Data Produk tidak ditemukan.');
 }
 
 match ($action) {
@@ -15,6 +25,6 @@ match ($action) {
     'delete' => $controller->delete(),
     default  => (function () {
         http_response_code(404);
-        exit('Action tidak ditemukan.');
+        exit('Aksi Data Produk tidak ditemukan.');
     })()
 };
